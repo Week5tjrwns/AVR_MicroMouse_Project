@@ -10,13 +10,17 @@
 
 개발 환경: Microchip Studio (AVR Studio), C언어
 
+
+
 2. 하드웨어 구성 (Hardware)
 
-MCU: ATmega128A (External Clock 16MHz)
+MCU: ATmega128A (외부 클럭 16MHz)
 
 Motor: Stepper Motor (SLA7026 Driver, 1-2상 여자 방식 구동)
 
 Sensor: IR Sensor (EL-7L) x 3 (좌/우/전방, ADC 인터페이스)
+
+
 
 3. 소프트웨어 핵심 로직 (Implementation)
 
@@ -28,7 +32,7 @@ stackX, stackY 배열을 이용한 스택(Stack) 자료구조 구현.
 
 visited[ ][ ] 배열로 방문 여부를 체크하고, 막다른 길에서는 스택을 Pop하여 되돌아오는 백트래킹(Backtracking) 로직 적용.
 
-탐색 우선순위: Left → Front → Right
+탐색 우선순위: Left -> Front -> Right
 
 B. 주행 제어 및 보정 (Algorithm.c, StepMotor.c)
 
@@ -36,7 +40,7 @@ PID 제어 (P-Control):
 
 좌/우 센서 값의 오차(err = L - R)를 계산하여 주행 경로를 중앙으로 보정.
 
-현재는 Kp=1, Ki=0, Kd=0으로 설정하여 비례 제어(P) 위주로 튜닝.
+현재는 Kp=1, Ki=0, Kd=0으로 설정하여 P 제어 위주로 튜닝.
 
 안전 유턴 로직 (Do_Uturn_GATED):
 
@@ -52,6 +56,8 @@ ADC 평균화: read_adc() 함수 내부에서 센서값을 4회 측정하여 평
 
 커밋 스텝 (Commit Steps): 90도 회전 직후에는 자세가 불안정하므로, TURN_COMMIT_BLOCKS 구간 동안은 강제 진입하여 통로 진입 유도.
 
+
+
 4. 트러블 슈팅 (Troubleshooting)
 
 1) JTAG 포트 충돌 문제 (main.c)
@@ -60,7 +66,7 @@ ADC 평균화: read_adc() 함수 내부에서 센서값을 4회 측정하여 평
 
 원인: ATmega128 출고 시 JTAG 인터페이스가 기본 활성화(Enable) 되어 있어 GPIO 제어 불가.
 
-해결: MCUCSR 레지스터의 JTD 비트를 2회 연속 설정하여 JTAG을 비활성화하는 disable_jtag() 함수 구현.
+해결: MCUCSR 레지스터의 JTD 비트를 High로 설정하여 JTAG을 비활성화하는 disable_jtag() 함수 구현.
 
 2) 스텝모터 배선 오류 해결 (StepMotor.c)
 
@@ -69,6 +75,8 @@ ADC 평균화: read_adc() 함수 내부에서 센서값을 4회 측정하여 평
 해결: 소프트웨어 드라이버에서 오른쪽 모터 인덱스(PR) 제어 방향을 역으로 매핑하여 해결.
 
 EX) if (dR > 0) PR = (PR - 1) & 7; // 전진 명령 시 인덱스 감소
+
+
 
 5. 파일 구조
 
