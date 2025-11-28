@@ -26,7 +26,7 @@ DFS (깊이 우선 탐색):
 
 stackX, stackY 배열을 이용한 스택(Stack) 자료구조 구현.
 
-visited[][] 배열로 방문 여부를 체크하고, 막다른 길에서는 스택을 Pop하여 되돌아오는 백트래킹(Backtracking) 로직 적용.
+visited[ ][ ] 배열로 방문 여부를 체크하고, 막다른 길에서는 스택을 Pop하여 되돌아오는 백트래킹(Backtracking) 로직 적용.
 
 탐색 우선순위: Left → Front → Right
 
